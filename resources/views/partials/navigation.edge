@@ -1,0 +1,30 @@
+<div class="bg-white shadow py-4">
+    <div class="container relative mx-auto flex items-center justify-between px-2 2xl:px-0">
+        <div class="block md:hidden">
+            <button type="menu" class="hamburger-menu-open">
+                <img src="{{ asset('assets/images/icon-menu.svg') }}" alt="" class="w-6">
+            </button>
+        </div>
+        <nav class="flex items-center">
+            <a href="{{ route('main') }}">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="w-36">
+            </a>
+            <ul class="hidden md:flex ml-3 primary-menu">
+                <li><a href="{{ route('questions.all') }}">Todas as dúvidas</a></li>
+                <li><a href="{{ route('questions.my') }}">Minhas dúvidas</a></li>
+            </ul>
+        </nav>
+        <div class="flex items-center cursor-pointer menu-profile-toggle">
+            <img src="{{ asset('assets/images/user.png') }}" alt="" class="w-8 rounded-full">
+            <span class="hidden md:block mx-1">Olá, {{ auth.user.name }}</span>
+            <img src="{{ asset('assets/images/icon-chevron-down.svg') }}" alt="" class="w-4">
+            <nav class="menu-profile">
+                <ul>
+                    <li><a href="{{route('users.me')}}">Meu Perfil</a></li>
+                    <li><a href="{{route('logout')}}">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    @include('partials/mobile-menu')
+</div>

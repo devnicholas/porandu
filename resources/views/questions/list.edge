@@ -1,0 +1,54 @@
+@include('partials/header')
+@include('partials/navigation')
+
+<div class="container my-4 px-2">
+    <div class="flex justify-between items-center">
+        <h1 class="text-xl font-semibold">
+            {{ onlyMy ? 'Minhas dúvidas' : 'Todas as dúvidas' }}
+        </h1>
+        <a href="{{ route('questions.new') }}" class="btn-primary">Adicionar</a>
+    </div>
+
+    <div class="relative overflow-x-auto mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Nº
+                    </th>
+                    <th scope="col">
+                        Título
+                    </th>
+                    <th scope="col">
+                        Aberto em
+                    </th>
+                    <th scope="col">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @each(question in questions)
+                <tr>
+                    <td>
+                        <a href="{{ route('questions.show', { id: question.id }) }}">#{{ question.id }}</a>
+                    </td>
+                    <th scope="row">
+                        <a href="{{ route('questions.show', { id: question.id }) }}">{{question.title}}</a>
+                    </th>
+                    <td>
+                        {{ question.createdAt.toFormat('dd/MM/yyyy HH:mm')}}
+                    </td>
+                    <td>
+                        <span class="badge {{question.active ? 'active' : ''}}">
+                            {{question.active ? 'Ativa' : 'Fechada'}}
+                        </span>
+                    </td>
+                </tr>
+                @end
+            </tbody>
+        </table>
+    </div>
+
+</div>
+@include('partials/footer')

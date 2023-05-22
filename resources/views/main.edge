@@ -1,0 +1,6 @@
+@include('partials/header')
+<div class="h-screen flex flex-col justify-center items-center">
+    <h1 class="text-xl mb-6">Hello {{ auth.user.name }}</h1>
+    <a href="{{ route('logout') }}" class="text-primary hover:underline">Logout</a>
+</div>
+@include('partials/footer')

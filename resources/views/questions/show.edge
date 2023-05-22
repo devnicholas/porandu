@@ -1,0 +1,90 @@
+@include('partials/header')
+@include('partials/navigation')
+<div class="container mx-auto flex flex-col md:flex-row items-stretch">
+    <div class="w-full md:w-3/4">
+        <div class="p-4">
+            <div class="mb-6">
+                <h1 class="text-xl font-semibold">{{ question.title }}</h1>
+                <div class="my-2 content-box">
+                    {{{ question.content }}}
+                </div>
+                @if(author.id == auth.user.id)
+                <form class="flex justify-end" method="POST"
+                    action="{{ route('questions.toggleState', { id: question.id }) }}">
+                    @if(question.active)
+                    <button type="submit" class="btn-green mr-1">Solucionar</button>
+                    @else
+                    <button type="submit" class="btn-red mr-1">Reabrir</button>
+                    @end
+                </form>
+                @end
+            </div>
+            <h2 class="text-xl mb-2">Respostas ({{ answers_count }})</h2>
+            @each(answer in answers)
+            <div class="w-full bg-white p-4 rounded shadow flex items-stretch flex-col md:flex-row mb-2">
+                <div class="w-full md:w-1/5 flex flex-row md:flex-col">
+                    <img src="{{ asset('assets/images/user.png') }}" alt="" class="w-12 h-12 rounded-full">
+                    <div class="mx-2 md:mx-0 md:mt-2">
+                        <p class="text-lg">{{ answer.author.name }}</p>
+                        <p class="text-gray-400 text-sm">{{ answer.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</p>
+                    </div>
+                </div>
+                <div class="w-full md:w-4/5 mt-2 md:mt-0 flex flex-col justify-between">
+                    <div class="content-box">
+                        {{{ answer.content }}}
+                    </div>
+                    <div class="flex justify-end">
+                        @if(answer.author.id === auth.user.id)
+                        <form action="{{ route('answers.delete', { id: answer.id }) }}" method="post">
+                            <button>
+                                <img src="{{ asset('assets/images/icon-trash.svg')}}" alt="" class="w-6">
+                            </button>
+                        </form>
+                        @end
+                    </div>
+                </div>
+            </div>
+            @else
+            <div class="w-full bg-white p-4 rounded shadow my-2">
+                <p class="text-lg text-center">Ainda não há nenhuma resposta. Seja o primeiro a responder.</p>
+            </div>
+            @endeach
+            @if(question.active)
+            <div class="w-full bg-white p-4 rounded shadow">
+                <h2 class="text-xl mb-2">Responder</h2>
+                <form action="{{ route('answers.save', { id: question.id }) }}" method="post">
+                    <div class="mb-2">
+                        <textarea name="content" class="input-editor"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full md:w-auto">Enviar</button>
+                </form>
+            </div>
+            @else
+            <div class="w-full bg-white p-4 rounded shadow my-2">
+                <p class="text-lg text-center">Essa dúvida foi encerrada pelo autor</p>
+            </div>
+            @end
+        </div>
+    </div>
+    <div class="w-full md:w-1/4 md:pl-5">
+        <div class="bg-gray-200 p-4 h-full">
+            <div class="mb-2">
+                <strong>Número</strong>
+                <p>#{{ question.id }}</p>
+            </div>
+            <div class="mb-2">
+                <strong>Aberto por</strong>
+                <p>{{ author.name }}</p>
+            </div>
+            <div class="mb-2">
+                <strong>Data de abertura</strong>
+                <p>{{ question.createdAt.toFormat('dd/MM/yyyy HH:mm')}}</p>
+            </div>
+            <div class="mb-2">
+                <strong>Status atual</strong>
+                <p>{{ question.active ? 'Ativa' : 'Fechada'}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+@include('partials/footer')
